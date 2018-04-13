@@ -52,6 +52,9 @@ RSpec.feature 'User authentication' do
 
   context 'With invalid details' do
     scenario 'blank fields while sign up' do
+      visit '/'
+      click_link_or_button 'Sign up'
+
       expect(page).to have_field('First name', with: '', type: 'text')
       expect(page).to have_field('Last name', with: '', type: 'text')
       expect(page).to have_field('Email', with: '', type: 'email')
@@ -91,6 +94,9 @@ RSpec.feature 'User authentication' do
     scenario 'already registered email' do
       create(:user, email: 'jan.kowalski@gmail.com', password: 'jkpassword')
 
+      visit '/'
+      click_link_or_button 'Sign up'
+
       fill_in 'First name', with: 'Jan'
       fill_in 'Last name', with: 'Kowalski'
       fill_in 'Email', with: 'jan.kowalski@gmail.com'
@@ -106,6 +112,9 @@ RSpec.feature 'User authentication' do
     end
 
     scenario 'invalid email' do
+      visit '/'
+      click_link_or_button 'Sign up'
+
       fill_in 'First name', with: 'Jan'
       fill_in 'Last name', with: 'Kowalski'
       fill_in 'Email', with: 'jan.kowalski.gmail.com'
@@ -123,6 +132,9 @@ RSpec.feature 'User authentication' do
     scenario 'too short password' do
       min_password_length = 5
       too_short_password = 'p' * (min_password_length - 1)
+
+      visit '/'
+      click_link_or_button 'Sign up'
 
       fill_in 'First name', with: 'Jan'
       fill_in 'Last name', with: 'Kowalski'
