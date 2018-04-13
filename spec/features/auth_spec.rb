@@ -14,7 +14,7 @@ RSpec.feature 'User authentication' do
 
       expect do
         click_button 'Create account'
-      end.to change {User.count}.by(1)
+      end.to change { User.count }.by(1)
 
       expect(current_path).to eq '/'
       expect(page).to have_content 'Your account has been successfully created'
@@ -68,7 +68,7 @@ RSpec.feature 'User authentication' do
                                           "Password confirmation can't be blank"
     end
 
-    scenario  'not same passwords' do
+    scenario 'not same passwords' do
       visit '/'
       click_link_or_button 'Sign up'
 
@@ -80,10 +80,57 @@ RSpec.feature 'User authentication' do
       fill_in 'Password', with: 'jkpassword'
       fill_in 'Password confirmation', with: 'xyz'
 
-      click_button 'Create account'
+      expect do
+        click_button 'Create account'
+      end.to change { User.count }.by(0)
 
       expect(current_path).to eq(new_user_registration_path)
-      expect(page).to have_content "Passwords aren't same"
+      expect(page).to have_error_message "Passwords aren't same"
+    end
+
+    scenario 'already registered email' do
+      create(:user, email: 'jan.kowalski@gmail.com', password: 'jkpassword')
+
+      fill_in 'First name', with: 'Jan'
+      fill_in 'Last name', with: 'Kowalski'
+      fill_in 'Email', with: 'jan.kowalski@gmail.com'
+      fill_in 'Password', with: 'jkpassword'
+      fill_in 'Password confirmation', with: 'jkpassword'
+
+      expect do
+        click_button 'Create account'
+      end.to change { User.count }.by(0)
+
+      expect(current_path).to eq(new_user_registration_path)
+      expect(page).to have_error_message 'Email has already been taken'
+    end
+
+    scenario 'invalid email' do
+      fill_in 'First name', with: 'Jan'
+      fill_in 'Last name', with: 'Kowalski'
+      fill_in 'Email', with: 'jan.kowalski.gmail.com'
+      fill_in 'Password', with: 'jkpassword'
+      fill_in 'Password confirmation', with: 'jkpassword'
+
+      expect do
+        click_button 'Create account'
+      end.to change { User.count }.by(0)
+
+      expect(current_path).to eq(new_user_registration_path)
+      expect(page).to have_error_message 'Invalid email address'
+    end
+
+    scenario 'too short password' do
+      min_password_length = 5
+      too_short_password = 'p' * (min_password_length - 1)
+
+      fill_in 'First name', with: 'Jan'
+      fill_in 'Last name', with: 'Kowalski'
+      fill_in 'Email', with: 'jan.kowalski.gmail.com'
+      fill_in 'Password', with: too_short_password
+      fill_in 'Password confirmation', with: too_short_password
+
+      expect(page).to have_error_message 'Password is too short (minimum is 5 characters)'
     end
   end
 end
