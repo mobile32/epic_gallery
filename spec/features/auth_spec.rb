@@ -16,7 +16,6 @@ RSpec.feature 'User authentication' do
         click_button 'Create account'
       end.to change { User.count }.by(1)
 
-      expect(current_path).to eq '/'
       expect(page).to have_content 'Your account has been successfully created'
     end
 
@@ -25,14 +24,13 @@ RSpec.feature 'User authentication' do
       visit '/'
       click_link_or_button 'Log in'
 
-      expect(current_path).to eq(new_user_session)
+      expect(current_path).to eq(new_user_session_path)
 
       fill_in 'Email', with: 'jan.kowalski@gmail.com'
       fill_in 'Password', with: 'jkpassword'
-      click_button 'Log in' #add more control details
+      click_button 'Log in'
 
-      expect(current_path).to eq '/'
-      expect(page).to have_content 'Signed in successfully'
+      expect(page).to have_content 'Log in successfully'
     end
 
     scenario 'log out' do
@@ -41,12 +39,7 @@ RSpec.feature 'User authentication' do
       visit '/'
       click_link_or_button 'Log out'
 
-      expect(page).to have_content 'Logout successfully'
-      expect(current_path).to eq '/'
-
-      click_link_or_button 'Log in'
-
-      expect(current_path).to eq(new_user_session)
+      expect(page).to have_content 'Log out successfully successfully'
     end
   end
 
@@ -54,21 +47,14 @@ RSpec.feature 'User authentication' do
     scenario 'blank fields while sign up' do
       visit '/'
       click_link_or_button 'Sign up'
-
-      expect(page).to have_field('First name', with: '', type: 'text')
-      expect(page).to have_field('Last name', with: '', type: 'text')
-      expect(page).to have_field('Email', with: '', type: 'email')
-
-      expect(find_field('Password', type: 'password').value).to be_nil
-      expect(find_field('Password confirmation', type: 'password').value).to be_nil
-
-      click_button 'Sign up'
+      click_button 'Create account'
 
       expect(page).to have_error_messages "First name can't be blank",
                                           "Last name can't be blank",
-                                          "Email name can't be blank",
-                                          "Password can't be blank",
-                                          "Password confirmation can't be blank"
+                                          "Email can't be blank",
+                                          "Password can't be blank"
+
+      expect(current_path).to eq(user_registration_path)
     end
 
     scenario 'not same passwords' do
@@ -87,8 +73,8 @@ RSpec.feature 'User authentication' do
         click_button 'Create account'
       end.to change { User.count }.by(0)
 
-      expect(current_path).to eq(new_user_registration_path)
-      expect(page).to have_error_message "Passwords aren't same"
+      expect(page).to have_error_message "Password confirmation does not match"
+      expect(current_path).to eq(user_registration_path)
     end
 
     scenario 'already registered email' do
@@ -107,8 +93,8 @@ RSpec.feature 'User authentication' do
         click_button 'Create account'
       end.to change { User.count }.by(0)
 
-      expect(current_path).to eq(new_user_registration_path)
       expect(page).to have_error_message 'Email has already been taken'
+      expect(current_path).to eq(user_registration_path)
     end
 
     scenario 'invalid email' do
@@ -125,8 +111,8 @@ RSpec.feature 'User authentication' do
         click_button 'Create account'
       end.to change { User.count }.by(0)
 
-      expect(current_path).to eq(new_user_registration_path)
       expect(page).to have_error_message 'Invalid email address'
+      expect(current_path).to eq(user_registration_path)
     end
 
     scenario 'too short password' do
@@ -143,6 +129,7 @@ RSpec.feature 'User authentication' do
       fill_in 'Password confirmation', with: too_short_password
 
       expect(page).to have_error_message 'Password is too short (minimum is 5 characters)'
+      expect(current_path).to eq(user_registration_path)
     end
   end
 end

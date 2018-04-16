@@ -20,7 +20,7 @@ require 'rspec/rails'
 # directory. Alternatively, in the individual `*_spec.rb` files, manually
 # require only the support files necessary.
 
-%w[capybara factory_bot].each do |support_file|
+%w[matchers capybara factory_bot].each do |support_file|
   require_relative "support/#{support_file}"
 end
 
