@@ -73,7 +73,7 @@ RSpec.feature 'User authentication' do
         click_button 'Create account'
       end.to change { User.count }.by(0)
 
-      expect(page).to have_error_message "Password confirmation does not match"
+      expect(page).to have_error_messages "Password confirmation does not match"
       expect(current_path).to eq(user_registration_path)
     end
 
@@ -93,7 +93,7 @@ RSpec.feature 'User authentication' do
         click_button 'Create account'
       end.to change { User.count }.by(0)
 
-      expect(page).to have_error_message 'Email has already been taken'
+      expect(page).to have_error_messages 'Email has already been taken'
       expect(current_path).to eq(user_registration_path)
     end
 
@@ -111,7 +111,6 @@ RSpec.feature 'User authentication' do
         click_button 'Create account'
       end.to change { User.count }.by(0)
 
-      expect(page).to have_error_message 'Invalid email address'
       expect(current_path).to eq(user_registration_path)
     end
 
@@ -124,11 +123,13 @@ RSpec.feature 'User authentication' do
 
       fill_in 'First name', with: 'Jan'
       fill_in 'Last name', with: 'Kowalski'
-      fill_in 'Email', with: 'jan.kowalski.gmail.com'
+      fill_in 'Email', with: 'jan.kowalski@dgmail.com'
       fill_in 'Password', with: too_short_password
       fill_in 'Password confirmation', with: too_short_password
 
-      expect(page).to have_error_message 'Password is too short (minimum is 5 characters)'
+      click_button 'Create account'
+
+      expect(page).to have_error_messages 'Password is too short (minimum is 6 characters)'
       expect(current_path).to eq(user_registration_path)
     end
   end
