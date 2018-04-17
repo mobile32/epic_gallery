@@ -133,4 +133,10 @@ RSpec.feature 'User authentication' do
       expect(current_path).to eq(user_registration_path)
     end
   end
+
+  context 'with google auth' do
+    scenario 'user create account with google auth' do
+
+    end
+  end
 end
