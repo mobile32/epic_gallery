@@ -1,6 +1,6 @@
 RSpec.feature 'User authentication' do
-  context 'With valid details' do
-    scenario 'sign up' do
+  context 'with valid details' do
+    scenario 'user sings up' do
       visit '/'
       click_link_or_button 'Sign up'
 
@@ -19,7 +19,7 @@ RSpec.feature 'User authentication' do
       expect(page).to have_content 'Your account has been successfully created'
     end
 
-    scenario 'log into' do
+    scenario 'user log into' do
       create(:user, email: 'jan.kowalski@gmail.com', password: 'jkpassword')
       visit '/'
       click_link_or_button 'Log in'
@@ -33,7 +33,7 @@ RSpec.feature 'User authentication' do
       expect(page).to have_content 'Log in successfully'
     end
 
-    scenario 'log out' do
+    scenario 'user log out' do
       user = create(:user, email: 'jan.kowalski@gmail.com', password: 'jkpassword')
       sign_in user
       visit '/'
@@ -43,8 +43,8 @@ RSpec.feature 'User authentication' do
     end
   end
 
-  context 'With invalid details' do
-    scenario 'blank fields while sign up' do
+  context 'with invalid details' do
+    scenario 'user lefting blank fields while sign up' do
       visit '/'
       click_link_or_button 'Sign up'
       click_button 'Create account'
@@ -57,7 +57,7 @@ RSpec.feature 'User authentication' do
       expect(current_path).to eq(user_registration_path)
     end
 
-    scenario 'not same passwords' do
+    scenario 'user filling fields with different passwords' do
       visit '/'
       click_link_or_button 'Sign up'
 
@@ -77,7 +77,7 @@ RSpec.feature 'User authentication' do
       expect(current_path).to eq(user_registration_path)
     end
 
-    scenario 'already registered email' do
+    scenario 'user trying to register with existing email' do
       create(:user, email: 'jan.kowalski@gmail.com', password: 'jkpassword')
 
       visit '/'
@@ -97,7 +97,7 @@ RSpec.feature 'User authentication' do
       expect(current_path).to eq(user_registration_path)
     end
 
-    scenario 'invalid email' do
+    scenario 'user using wrong email address' do
       visit '/'
       click_link_or_button 'Sign up'
 
@@ -114,7 +114,7 @@ RSpec.feature 'User authentication' do
       expect(current_path).to eq(user_registration_path)
     end
 
-    scenario 'too short password' do
+    scenario 'user using to short password' do
       min_password_length = 5
       too_short_password = 'p' * (min_password_length - 1)
 
