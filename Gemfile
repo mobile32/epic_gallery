@@ -7,6 +7,7 @@ end
 
 gem 'devise'
 gem 'jbuilder', '~> 2.5'
+gem 'omniauth-google-oauth2'
 gem 'pg', '>= 0.18', '< 2.0'
 gem 'pry-rails'
 gem 'puma', '~> 3.7'
