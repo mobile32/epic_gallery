@@ -30,6 +30,7 @@ end
 
 group :test do
   gem 'factory_bot_rails'
+  gem 'simplecov'
 end
 
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
