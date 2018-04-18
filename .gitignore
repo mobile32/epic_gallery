@@ -24,3 +24,9 @@ yarn-debug.log*
 .yarn-integrity
 .idea/
 database.yml
+spec/examples\.txt
+
+# Ignore application configuration
+/config/application.yml
+
+coverage/

@@ -6,7 +6,9 @@ git_source(:github) do |repo_name|
 end
 
 gem 'devise'
+gem 'figaro'
 gem 'jbuilder', '~> 2.5'
+gem 'omniauth-google-oauth2'
 gem 'pg', '>= 0.18', '< 2.0'
 gem 'pry-rails'
 gem 'puma', '~> 3.7'
@@ -28,6 +30,7 @@ end
 
 group :test do
   gem 'factory_bot_rails'
+  gem 'simplecov'
 end
 
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
