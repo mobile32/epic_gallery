@@ -1,7 +1,7 @@
 RSpec.feature 'User authentication' do
   context 'with valid details' do
     scenario 'user sings up' do
-      visit '/'
+      visit root_path
       click_link_or_button 'Sign up'
 
       expect(current_path).to eq(new_user_registration_path)
@@ -14,14 +14,14 @@ RSpec.feature 'User authentication' do
 
       expect do
         click_button 'Create account'
-      end.to change { User.count }.by(1)
+      end.to change {User.count}.by(1)
 
       expect(page).to have_content 'Your account has been successfully created'
     end
 
     scenario 'user log into' do
       create(:user, email: 'jan.kowalski@gmail.com', password: 'jkpassword')
-      visit '/'
+      visit root_path
       click_link_or_button 'Log in'
 
       expect(current_path).to eq(new_user_session_path)
@@ -36,7 +36,7 @@ RSpec.feature 'User authentication' do
     scenario 'user log out' do
       user = create(:user, email: 'jan.kowalski@gmail.com', password: 'jkpassword')
       sign_in user
-      visit '/'
+      visit root_path
       click_link_or_button 'Log out'
 
       expect(page).to have_content 'Log out successfully successfully'
@@ -45,7 +45,7 @@ RSpec.feature 'User authentication' do
 
   context 'with invalid details' do
     scenario 'user lefting blank fields while sign up' do
-      visit '/'
+      visit root_path
       click_link_or_button 'Sign up'
       click_button 'Create account'
 
@@ -58,7 +58,7 @@ RSpec.feature 'User authentication' do
     end
 
     scenario 'user filling fields with different passwords' do
-      visit '/'
+      visit root_path
       click_link_or_button 'Sign up'
 
       expect(current_path).to eq(new_user_registration_path)
@@ -71,7 +71,7 @@ RSpec.feature 'User authentication' do
 
       expect do
         click_button 'Create account'
-      end.to change { User.count }.by(0)
+      end.to change {User.count}.by(0)
 
       expect(page).to have_error_messages "Password confirmation does not match"
       expect(current_path).to eq(user_registration_path)
@@ -80,7 +80,7 @@ RSpec.feature 'User authentication' do
     scenario 'user trying to register with existing email' do
       create(:user, email: 'jan.kowalski@gmail.com', password: 'jkpassword')
 
-      visit '/'
+      visit root_path
       click_link_or_button 'Sign up'
 
       fill_in 'First name', with: 'Jan'
@@ -91,14 +91,14 @@ RSpec.feature 'User authentication' do
 
       expect do
         click_button 'Create account'
-      end.to change { User.count }.by(0)
+      end.to change {User.count}.by(0)
 
       expect(page).to have_error_messages 'Email has already been taken'
       expect(current_path).to eq(user_registration_path)
     end
 
     scenario 'user using wrong email address' do
-      visit '/'
+      visit root_path
       click_link_or_button 'Sign up'
 
       fill_in 'First name', with: 'Jan'
@@ -109,7 +109,7 @@ RSpec.feature 'User authentication' do
 
       expect do
         click_button 'Create account'
-      end.to change { User.count }.by(0)
+      end.to change {User.count}.by(0)
 
       expect(current_path).to eq(user_registration_path)
     end
@@ -118,7 +118,7 @@ RSpec.feature 'User authentication' do
       min_password_length = 5
       too_short_password = 'p' * (min_password_length - 1)
 
-      visit '/'
+      visit root_path
       click_link_or_button 'Sign up'
 
       fill_in 'First name', with: 'Jan'
@@ -135,8 +135,37 @@ RSpec.feature 'User authentication' do
   end
 
   context 'with google auth' do
-    scenario 'user create account with google auth' do
+    scenario 'user using google oauth2' do
+      stub_omniauth
+      visit root_path
+      click_link_or_button 'Sign up'
 
+      expect(page).to have_link("Sign in with Google")
+
+      click_link "Sign in with Google"
+
+      expect(page).to have_content("Jan Kowalski")
+      expect(page).to have_link("Log out")
     end
   end
+
+  def stub_omniauth
+    OmniAuth.config.test_mode = true
+    OmniAuth.config.mock_auth[:google_oauth2] =
+        OmniAuth::AuthHash.new({
+                                   provider: "google",
+                                   uid: "12345678910",
+                                   info: {
+                                       email: "jan.kowalski@dgmail.com",
+                                       first_name: "Jan",
+                                       last_name: "Kowalski"
+                                   },
+                                   credentials: {
+                                       token: "abcdefg12345",
+                                       refresh_token: "12345abcdefg",
+                                       expires_at: DateTime.now,
+                                   }
+                               })
+  end
 end
+
