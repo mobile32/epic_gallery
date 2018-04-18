@@ -135,7 +135,7 @@ RSpec.feature 'User authentication' do
   end
 
   context 'with google auth' do
-    scenario 'user using google oauth2' do
+    scenario 'user can login using google oauth2' do
       stub_omniauth
       visit root_path
       click_link_or_button 'Sign up'

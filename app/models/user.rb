@@ -10,7 +10,6 @@ class User < ApplicationRecord
     data = access_token.info
     user = User.where(email: data['email']).first
 
-    # Uncomment the section below if you want users to be created if they don't exist
     user ||= User.create(first_name: data['first_name'],
                          last_name: data['last_name'],
                          email: data['email'],
