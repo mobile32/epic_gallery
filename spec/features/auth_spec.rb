@@ -149,6 +149,15 @@ RSpec.feature 'User authentication' do
     end
   end
 
+  context 'With administrator privileges' do
+    scenario 'user with who is admin can open admin panel' do
+      create(:user, email: 'jan.kowalski@gmail.com', password: 'jkpassword', admin: true)
+
+      visit '/administrator'
+      expect(current_path).to eq()
+    end
+  end
+
   def stub_omniauth
     OmniAuth.config.test_mode = true
     OmniAuth.config.mock_auth[:google_oauth2] =
