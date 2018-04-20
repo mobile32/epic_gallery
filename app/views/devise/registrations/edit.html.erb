@@ -3,6 +3,7 @@
 <%= simple_form_for(resource, url: registration_path(@user), html: {method: :put}, wrapper: :vertical_form) do |f| %>
   <%= devise_error_messages! %>
 
+  <%= f.input :avatar, as: :file %>
   <%= f.input :first_name %>
   <%= f.input :last_name %>
   <%= f.input :email %>
