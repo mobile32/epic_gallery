@@ -6,13 +6,16 @@ git_source(:github) do |repo_name|
 end
 
 gem 'devise'
+gem 'carrierwave'
 gem 'figaro'
 gem 'jbuilder', '~> 2.5'
 gem 'omniauth-google-oauth2'
 gem 'pg', '>= 0.18', '< 2.0'
 gem 'pry-rails'
 gem 'puma', '~> 3.7'
+gem 'pundit'
 gem 'rails', '~> 5.1.6'
+gem 'simple_form'
 gem 'webpacker'
 
 group :development, :test do

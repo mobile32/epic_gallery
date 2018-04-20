@@ -149,6 +149,22 @@ RSpec.feature 'User authentication' do
     end
   end
 
+  context 'With administrator privileges' do
+    scenario 'user with admin privileges can open list with users' do
+      user = create(:user, email: 'jan.kowalski@gmail.com', admin: true)
+      sign_in user
+
+      create(:user, email: 'test1@gmail.com', password: 'jkpassword')
+      create(:user, email: 'test2@gmail.com', password: 'jkpassword')
+
+      visit '/admin_panel/users'
+      expect(current_path).to eq('/admin_panel/users')
+
+      expect(page).to have_content('test1@gmail.com')
+      expect(page).to have_content('test2@gmail.com')
+    end
+  end
+
   def stub_omniauth
     OmniAuth.config.test_mode = true
     OmniAuth.config.mock_auth[:google_oauth2] =

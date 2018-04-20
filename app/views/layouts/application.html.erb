@@ -4,8 +4,8 @@
   <title>EpicGallery</title>
   <%= csrf_meta_tags %>
 
-  <%= stylesheet_pack_tag 'application', 'data-turbolinks-track': 'reload', media: 'all' %>
-  <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+  <%= stylesheet_pack_tag "application", "data-turbolinks-track": "reload", media: "all" %>
+  <%= javascript_pack_tag "application", "data-turbolinks-track": "reload" %>
 </head>
 
 <body>
@@ -24,36 +24,48 @@
   </button>
 
   <div class="collapse navbar-collapse" id="navbarNav">
-    <ul class="navbar-nav ml-auto">
+    <% if current_user && current_user.admin? %>
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Admin Tools
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <%= link_to 'Users list', admin_panel_users_path, class: 'dropdown-item' %>
+          </div>
+        </li>
+      </ul>
+    <% end %>
 
+    <ul class="navbar-nav ml-auto">
       <% if user_signed_in? %>
-        <li class="navbar-text">
-          Hello <%= full_name(current_user) %>! |
-        </li>
-        <li>
-          <%= link_to('Edit account', edit_user_registration_path, class: "nav-link") %>
-        </li>
-        <li class="nav-item">
-          <%= link_to('Log out', destroy_user_session_path, method: :delete, class: "nav-link") %>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="userDropDown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Hello, <%= full_name(current_user) %> !
+            <%= image_tag(current_user.avatar_url, class: 'profile-image') if current_user.avatar? %>
+          </a>
+          <div class="dropdown-menu" aria-labelledby="userDropDown">
+            <%= link_to('Edit account', edit_user_registration_path, class: 'dropdown-item') %>
+            <%= link_to('Log out', destroy_user_session_path, method: :delete, class: 'dropdown-item') %>
+          </div>
         </li>
       <% else %>
         <li class="nav-item">
-          <%= link_to 'Log in', new_user_session_path, class: "nav-link" %>
+          <%= link_to 'Log in', new_user_session_path, class: 'nav-link' %>
         </li>
         <li class="nav-item">
-          <%= link_to('Sign up', new_user_registration_path, class: "nav-link")  %>
+          <%= link_to 'Sign up', new_user_registration_path, class: 'nav-link' %>
         </li>
       <% end %>
-
     </ul>
   </div>
 </nav>
 
-<div class="container">
-  <% flash.each do |key, value| %>
-    <div class="alert alert-<%= key %>"><%= value %></div>
-  <% end %>
+<% flash.each do |key, value| %>
+  <div class="alert alert-<%= key %>"><%= value %></div>
+<% end %>
 
+<div class="container">
   <%= yield %>
 </div>
 
