@@ -151,7 +151,7 @@ RSpec.feature 'User authentication' do
 
   context 'With administrator privileges' do
     scenario 'user with admin privileges can open list with users' do
-      user = create(:user, email: 'jan.kowalski@gmail.com', password: 'jkpassword', admin: true)
+      user = create(:user, email: 'jan.kowalski@gmail.com', admin: true)
       sign_in user
 
       create(:user, email: 'test1@gmail.com', password: 'jkpassword')
