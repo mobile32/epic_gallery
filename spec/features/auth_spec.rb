@@ -150,11 +150,18 @@ RSpec.feature 'User authentication' do
   end
 
   context 'With administrator privileges' do
-    scenario 'user with who is admin can open admin panel' do
-      create(:user, email: 'jan.kowalski@gmail.com', password: 'jkpassword', admin: true)
+    scenario 'user with admin privileges can open list with users' do
+      user = create(:user, email: 'jan.kowalski@gmail.com', password: 'jkpassword', admin: true)
+      sign_in user
 
-      visit '/administrator'
-      expect(current_path).to eq()
+      create(:user, email: 'test1@gmail.com', password: 'jkpassword')
+      create(:user, email: 'test2@gmail.com', password: 'jkpassword')
+
+      visit '/admin_panel/users'
+      expect(current_path).to eq('/admin_panel/users')
+
+      expect(page).to have_content('test1@gmail.com')
+      expect(page).to have_content('test2@gmail.com')
     end
   end
 
