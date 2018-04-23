@@ -10,10 +10,50 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180420110036) do
+ActiveRecord::Schema.define(version: 20180423091059) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "galleries", force: :cascade do |t|
+    t.string "cover_image"
+    t.string "title", null: false
+    t.string "description"
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_galleries_on_user_id"
+  end
+
+  create_table "galleries_tags", force: :cascade do |t|
+    t.bigint "galleries_id"
+    t.bigint "tags_id"
+    t.index ["galleries_id"], name: "index_galleries_tags_on_galleries_id"
+    t.index ["tags_id"], name: "index_galleries_tags_on_tags_id"
+  end
+
+  create_table "images", force: :cascade do |t|
+    t.string "image", null: false
+    t.string "description"
+    t.string "localization"
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_images_on_user_id"
+  end
+
+  create_table "images_tags", force: :cascade do |t|
+    t.bigint "images_id"
+    t.bigint "tags_id"
+    t.index ["images_id"], name: "index_images_tags_on_images_id"
+    t.index ["tags_id"], name: "index_images_tags_on_tags_id"
+  end
+
+  create_table "tags", force: :cascade do |t|
+    t.string "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
@@ -36,4 +76,6 @@ ActiveRecord::Schema.define(version: 20180420110036) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "galleries", "users"
+  add_foreign_key "images", "users"
 end
