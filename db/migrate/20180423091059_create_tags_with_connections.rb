@@ -7,13 +7,13 @@ class CreateTagsWithConnections < ActiveRecord::Migration[5.1]
     end
 
     create_table :galleries_tags do |t|
-      t.belongs_to :galleries, index: true
-      t.belongs_to :tags, index: true
+      t.belongs_to :galleries, index: true, foreign_key: true, null: false
+      t.belongs_to :tags, index: true, foreign_key: true, null: false
     end
 
     create_table :images_tags do |t|
-      t.belongs_to :images, index: true
-      t.belongs_to :tags, index: true
+      t.belongs_to :images, index: true, foreign_key: true, null: false
+      t.belongs_to :tags, index: true, foreign_key: true, null: false
     end
   end
 end

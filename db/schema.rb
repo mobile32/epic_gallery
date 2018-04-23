@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180423091059) do
+ActiveRecord::Schema.define(version: 20180423111426) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -26,8 +26,8 @@ ActiveRecord::Schema.define(version: 20180423091059) do
   end
 
   create_table "galleries_tags", force: :cascade do |t|
-    t.bigint "galleries_id"
-    t.bigint "tags_id"
+    t.bigint "galleries_id", null: false
+    t.bigint "tags_id", null: false
     t.index ["galleries_id"], name: "index_galleries_tags_on_galleries_id"
     t.index ["tags_id"], name: "index_galleries_tags_on_tags_id"
   end
@@ -39,12 +39,14 @@ ActiveRecord::Schema.define(version: 20180423091059) do
     t.bigint "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "gallery_id"
+    t.index ["gallery_id"], name: "index_images_on_gallery_id"
     t.index ["user_id"], name: "index_images_on_user_id"
   end
 
   create_table "images_tags", force: :cascade do |t|
-    t.bigint "images_id"
-    t.bigint "tags_id"
+    t.bigint "images_id", null: false
+    t.bigint "tags_id", null: false
     t.index ["images_id"], name: "index_images_tags_on_images_id"
     t.index ["tags_id"], name: "index_images_tags_on_tags_id"
   end
@@ -77,5 +79,10 @@ ActiveRecord::Schema.define(version: 20180423091059) do
   end
 
   add_foreign_key "galleries", "users"
+  add_foreign_key "galleries_tags", "galleries", column: "galleries_id"
+  add_foreign_key "galleries_tags", "tags", column: "tags_id"
+  add_foreign_key "images", "galleries"
   add_foreign_key "images", "users"
+  add_foreign_key "images_tags", "images", column: "images_id"
+  add_foreign_key "images_tags", "tags", column: "tags_id"
 end

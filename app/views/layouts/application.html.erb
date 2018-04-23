@@ -24,8 +24,17 @@
   </button>
 
   <div class="collapse navbar-collapse" id="navbarNav">
-    <% if current_user && current_user.admin? %>
-      <ul class="navbar-nav mr-auto">
+    <ul class="navbar-nav mr-auto">
+      <% if current_user %>
+        <li class="nav-item">
+          <%= link_to 'Galleries', galleries_path, class: 'nav-link' %>
+        </li>
+        <li class="nav-item">
+          <%= link_to 'Images', images_path, class: 'nav-link' %>
+        </li>
+      <% end %>
+
+      <% if current_user && current_user.admin? %>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Admin Tools
@@ -34,8 +43,8 @@
             <%= link_to 'Users list', admin_panel_users_path, class: 'dropdown-item' %>
           </div>
         </li>
-      </ul>
-    <% end %>
+      <% end %>
+    </ul>
 
     <ul class="navbar-nav ml-auto">
       <% if user_signed_in? %>
@@ -61,8 +70,13 @@
   </div>
 </nav>
 
-<% flash.each do |key, value| %>
-  <div class="alert alert-<%= key %>"><%= value %></div>
+<% flash.each do |type, message| %>
+  <% unless message.to_s.strip == 'true' %>
+    <div class="flash flash--notice alert <%= bootstrap_class_for(type) %>">
+      <button class="btn btn--stripped close" data-dismiss="alert">×</button>
+      <%= message.is_a?(Array) ? message.join("<br>").html_safe : message %>
+    </div>
+  <% end %>
 <% end %>
 
 <div class="container">
