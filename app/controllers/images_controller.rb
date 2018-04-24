@@ -3,6 +3,10 @@ class ImagesController < ApplicationController
     @images = Image.where(user: current_user)
   end
 
+  def show
+    @image = Image.where(user: current_user).find(params[:id])
+  end
+
   def new
     @image = Image.new
   end
