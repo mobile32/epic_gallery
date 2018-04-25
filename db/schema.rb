@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180423091059) do
+ActiveRecord::Schema.define(version: 20180425102423) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -40,6 +40,13 @@ ActiveRecord::Schema.define(version: 20180423091059) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_images_on_user_id"
+  end
+
+  create_table "images_galleries", force: :cascade do |t|
+    t.bigint "images_id", null: false
+    t.bigint "galleries_id", null: false
+    t.index ["galleries_id"], name: "index_images_galleries_on_galleries_id"
+    t.index ["images_id"], name: "index_images_galleries_on_images_id"
   end
 
   create_table "images_tags", force: :cascade do |t|
@@ -80,6 +87,8 @@ ActiveRecord::Schema.define(version: 20180423091059) do
   add_foreign_key "galleries_tags", "galleries", column: "galleries_id"
   add_foreign_key "galleries_tags", "tags", column: "tags_id"
   add_foreign_key "images", "users"
+  add_foreign_key "images_galleries", "galleries", column: "galleries_id"
+  add_foreign_key "images_galleries", "images", column: "images_id"
   add_foreign_key "images_tags", "images", column: "images_id"
   add_foreign_key "images_tags", "tags", column: "tags_id"
 end

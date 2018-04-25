@@ -4,7 +4,11 @@ import 'bootstrap/dist/js/bootstrap';
 import Rails from 'rails-ujs';
 import Turbolinks from 'turbolinks';
 
-import './images.js'
+import initLightGallery from '../components/lightgallery'
 
 Rails.start();
 Turbolinks.start();
+
+$(document).on('turbolinks:load', function () {
+    initLightGallery();
+});

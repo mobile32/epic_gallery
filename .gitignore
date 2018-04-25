@@ -30,3 +30,4 @@ spec/examples\.txt
 /config/application.yml
 
 coverage/
+/public/uploads/

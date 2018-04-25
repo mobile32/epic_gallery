@@ -1,24 +1,7 @@
-<div class="container">
-  <div class="row">
-    <div class="gallery col-lg-12 col-md-12 col-sm-12 col-xs-12">
-      <br>
-      <h1 class="gallery-title">Gallery</h1>
-      <div align="center">
-        <%= button_tag('All', class: 'btn btn-default filter-button', 'data-filter': 'all') %>
-        <% @images.each do |image| %>
-          <%= button_tag(image.localization.to_s, class: 'btn btn-default filter-button', 'data-filter': image.localization.to_s.parameterize.underscore) %>
-        <% end %>
-      </div>
-    </div>
-
-    <% @images.each do |image| %>
-      <div class="gallery_product col-lg-4 col-md-4 col-sm-4 col-xs-6 filter <%= image.localization.to_s.parameterize.underscore %>">
-        <%= link_to image_tag(image.image_file.url(:thumb), class: 'img-responsive img-border'),
-                    image_path(image.id),
-                    remote: true,
-                    'data-toggle': 'modal',
-                    'data-target': '#imagePreviewModal' %>
-      </div>
-    <% end %>
-  </div>
+<br>
+<div id="lightgallery">
+  <% @images.each do |image| %>
+    <%= link_to image_tag(image.image_file.url(:thumb)), image.image_file.url %>
+  <% end %>
 </div>
+<br>
