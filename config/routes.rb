@@ -8,5 +8,5 @@ Rails.application.routes.draw do
   end
 
   resources :galleries
-  resources :images
+  resources :uploads
 end

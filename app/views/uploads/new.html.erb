@@ -1,0 +1,11 @@
+<div class="container">
+  <br>
+  <h1>Upload images</h1>
+  <br>
+  <%= simple_form_for(@upload, wrapper: :vertical_form) do |f| %>
+    <%= f.input :images, as: :file, input_html: { multiple: true } %>
+    <br>
+    <%= f.button :submit, 'Send images' %>
+  <% end %>
+  <br>
+</div>

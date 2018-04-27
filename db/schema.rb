@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180425102423) do
+ActiveRecord::Schema.define(version: 20180427085317) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -25,41 +25,19 @@ ActiveRecord::Schema.define(version: 20180425102423) do
     t.index ["user_id"], name: "index_galleries_on_user_id"
   end
 
-  create_table "galleries_tags", force: :cascade do |t|
-    t.bigint "galleries_id", null: false
-    t.bigint "tags_id", null: false
-    t.index ["galleries_id"], name: "index_galleries_tags_on_galleries_id"
-    t.index ["tags_id"], name: "index_galleries_tags_on_tags_id"
-  end
-
-  create_table "images", force: :cascade do |t|
-    t.string "image_file", null: false
-    t.string "description"
-    t.string "localization"
+  create_table "uploads", force: :cascade do |t|
+    t.string "images", default: [], array: true
     t.bigint "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_images_on_user_id"
+    t.index ["user_id"], name: "index_uploads_on_user_id"
   end
 
-  create_table "images_galleries", force: :cascade do |t|
-    t.bigint "images_id", null: false
-    t.bigint "galleries_id", null: false
-    t.index ["galleries_id"], name: "index_images_galleries_on_galleries_id"
-    t.index ["images_id"], name: "index_images_galleries_on_images_id"
-  end
-
-  create_table "images_tags", force: :cascade do |t|
-    t.bigint "images_id", null: false
-    t.bigint "tags_id", null: false
-    t.index ["images_id"], name: "index_images_tags_on_images_id"
-    t.index ["tags_id"], name: "index_images_tags_on_tags_id"
-  end
-
-  create_table "tags", force: :cascade do |t|
-    t.string "name", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+  create_table "uploads_galleries", force: :cascade do |t|
+    t.bigint "uploads_id"
+    t.bigint "galleries_id"
+    t.index ["galleries_id"], name: "index_uploads_galleries_on_galleries_id"
+    t.index ["uploads_id"], name: "index_uploads_galleries_on_uploads_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -84,11 +62,7 @@ ActiveRecord::Schema.define(version: 20180425102423) do
   end
 
   add_foreign_key "galleries", "users"
-  add_foreign_key "galleries_tags", "galleries", column: "galleries_id"
-  add_foreign_key "galleries_tags", "tags", column: "tags_id"
-  add_foreign_key "images", "users"
-  add_foreign_key "images_galleries", "galleries", column: "galleries_id"
-  add_foreign_key "images_galleries", "images", column: "images_id"
-  add_foreign_key "images_tags", "images", column: "images_id"
-  add_foreign_key "images_tags", "tags", column: "tags_id"
+  add_foreign_key "uploads", "users"
+  add_foreign_key "uploads_galleries", "galleries", column: "galleries_id"
+  add_foreign_key "uploads_galleries", "uploads", column: "uploads_id"
 end
