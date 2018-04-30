@@ -1,9 +1,0 @@
-<br>
-<div id="lightgallery">
-  <% @uploads.each do |upload| %>
-    <% upload.each do |images| %>
-      <%= link_to image_tag(images.url(:thumb)), image.image_file.url %>
-    <% end %>
-  <% end %>
-</div>
-<br>

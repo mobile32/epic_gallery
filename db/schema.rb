@@ -25,19 +25,19 @@ ActiveRecord::Schema.define(version: 20180427085317) do
     t.index ["user_id"], name: "index_galleries_on_user_id"
   end
 
-  create_table "uploads", force: :cascade do |t|
-    t.string "images", default: [], array: true
+  create_table "images", force: :cascade do |t|
+    t.string "image_file", null: false
     t.bigint "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_uploads_on_user_id"
+    t.index ["user_id"], name: "index_images_on_user_id"
   end
 
-  create_table "uploads_galleries", force: :cascade do |t|
-    t.bigint "uploads_id"
+  create_table "images_galleries", force: :cascade do |t|
+    t.bigint "images_id"
     t.bigint "galleries_id"
-    t.index ["galleries_id"], name: "index_uploads_galleries_on_galleries_id"
-    t.index ["uploads_id"], name: "index_uploads_galleries_on_uploads_id"
+    t.index ["galleries_id"], name: "index_images_galleries_on_galleries_id"
+    t.index ["images_id"], name: "index_images_galleries_on_images_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -62,7 +62,7 @@ ActiveRecord::Schema.define(version: 20180427085317) do
   end
 
   add_foreign_key "galleries", "users"
-  add_foreign_key "uploads", "users"
-  add_foreign_key "uploads_galleries", "galleries", column: "galleries_id"
-  add_foreign_key "uploads_galleries", "uploads", column: "uploads_id"
+  add_foreign_key "images", "users"
+  add_foreign_key "images_galleries", "galleries", column: "galleries_id"
+  add_foreign_key "images_galleries", "images", column: "images_id"
 end

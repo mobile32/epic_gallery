@@ -9,7 +9,7 @@ class GalleriesController < ApplicationController
   #
   # def gallery_params
   #   params.require(:gallery)
-  #       .permit(:cover_image, :title, :description, uploads: [])
+  #       .permit(:cover_image, :title, :description, images: [])
   #       .merge(user: current_user)
   # end
 end
