@@ -16,6 +16,7 @@ gem 'pry-rails'
 gem 'puma', '~> 3.7'
 gem 'pundit'
 gem 'rails', '~> 5.1.6'
+gem "rails-patterns"
 gem 'simple_form'
 gem 'webpacker'
 

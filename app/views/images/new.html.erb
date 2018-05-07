@@ -2,7 +2,7 @@
   <br>
   <h1>Upload images</h1>
   <br>
-  <%= simple_form_for(@upload, url: images_path(@upload), html: {method: :post}, wrapper: :vertical_form) do |f| %>
+  <%= simple_form_for(@upload_form, url: images_path(@images), html: {method: :post}, wrapper: :vertical_form) do |f| %>
     <%= f.input :files, as: :file, input_html: {multiple: true } %>
     <br>
     <%= f.button :submit, 'Send images' %>
