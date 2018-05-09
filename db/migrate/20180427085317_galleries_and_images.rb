@@ -16,9 +16,9 @@ class GalleriesAndImages < ActiveRecord::Migration[5.1]
       t.timestamps
     end
 
-    create_table :images_galleries do |t|
-      t.belongs_to :images, index: true, foreign_key: true
-      t.belongs_to :galleries, index: true, foreign_key: true
+    create_table :galleries_images do |t|
+      t.belongs_to :image, index: true, foreign_key: true
+      t.belongs_to :gallery, index: true, foreign_key: true
     end
   end
 end

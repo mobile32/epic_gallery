@@ -4,6 +4,9 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable,
          :omniauthable, omniauth_providers: [:google_oauth2]
+
+  has_many :galleries
+
   validates :first_name, :last_name, presence: true
 
   mount_uploader :avatar, ImageUploader
