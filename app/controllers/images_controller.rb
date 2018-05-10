@@ -16,6 +16,7 @@ class ImagesController < ApplicationController
       redirect_to images_path, notice: "The image has been uploaded."
     else
       @galleries = current_user.galleries
+      flash[:error] = "Upload was faild."
       render :new
     end
   end

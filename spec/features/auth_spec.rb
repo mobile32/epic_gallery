@@ -2,7 +2,7 @@ RSpec.feature 'User authentication' do
   context 'with valid details' do
     scenario 'user sings up' do
       visit root_path
-      click_link_or_button 'Sign up'
+      page.find("#navbarNav").click_link_or_button 'Sign up'
 
       expect(current_path).to eq(new_user_registration_path)
 
@@ -22,7 +22,7 @@ RSpec.feature 'User authentication' do
     scenario 'user log into' do
       create(:user, email: 'jan.kowalski@gmail.com', password: 'jkpassword')
       visit root_path
-      click_link_or_button 'Log in'
+      page.find("#navbarNav").click_link_or_button 'Log in'
 
       expect(current_path).to eq(new_user_session_path)
 
@@ -37,16 +37,16 @@ RSpec.feature 'User authentication' do
       user = create(:user, email: 'jan.kowalski@gmail.com', password: 'jkpassword')
       sign_in user
       visit root_path
-      click_link_or_button 'Log out'
+      page.find('#navbarNav').click_link_or_button 'Log out'
 
-      expect(page).to have_content 'Log out successfully successfully'
+      expect(page).to have_content 'You need to sign in or sign up before continuing'
     end
   end
 
   context 'with invalid details' do
     scenario 'user lefting blank fields while sign up' do
       visit root_path
-      click_link_or_button 'Sign up'
+      page.find("#navbarNav").click_link_or_button 'Sign up'
       click_button 'Create account'
 
       expect(page).to have_error_messages "First name can't be blank",
@@ -59,7 +59,7 @@ RSpec.feature 'User authentication' do
 
     scenario 'user filling fields with different passwords' do
       visit root_path
-      click_link_or_button 'Sign up'
+      page.find("#navbarNav").click_link_or_button 'Sign up'
 
       expect(current_path).to eq(new_user_registration_path)
 
@@ -81,7 +81,7 @@ RSpec.feature 'User authentication' do
       create(:user, email: 'jan.kowalski@gmail.com', password: 'jkpassword')
 
       visit root_path
-      click_link_or_button 'Sign up'
+      page.find("#navbarNav").click_link_or_button 'Sign up'
 
       fill_in 'First name', with: 'Jan'
       fill_in 'Last name', with: 'Kowalski'
@@ -99,7 +99,7 @@ RSpec.feature 'User authentication' do
 
     scenario 'user using wrong email address' do
       visit root_path
-      click_link_or_button 'Sign up'
+      page.find("#navbarNav").click_link_or_button 'Sign up'
 
       fill_in 'First name', with: 'Jan'
       fill_in 'Last name', with: 'Kowalski'
@@ -119,7 +119,7 @@ RSpec.feature 'User authentication' do
       too_short_password = 'p' * (min_password_length - 1)
 
       visit root_path
-      click_link_or_button 'Sign up'
+      page.find("#navbarNav").click_link_or_button 'Sign up'
 
       fill_in 'First name', with: 'Jan'
       fill_in 'Last name', with: 'Kowalski'
@@ -138,7 +138,7 @@ RSpec.feature 'User authentication' do
     scenario 'user can login using google oauth2' do
       stub_omniauth
       visit root_path
-      click_link_or_button 'Sign up'
+      page.find("#navbarNav").click_link_or_button 'Sign up'
 
       expect(page).to have_link("Sign in with Google")
 
