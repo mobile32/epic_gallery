@@ -1,11 +1,16 @@
+photo = Rails.root + 'spec/fixtures/photo.jpg'
+
 RSpec.feature 'User gallery' do
   context 'with valid data' do
     scenario 'user upload image and want to see it in Images card' do
       sign_in create(:user)
       visit root_path
 
-      page.find('#navbarNav').click_link_or_button 'Upload images'
-      attach_file('upload[files][]', Rails.root + 'spec/fixtures/photo.jpg')
+      within '#navbarNav' do
+        click_link_or_button 'Upload images'
+      end
+
+      attach_file('upload[files][]', photo)
       click_link_or_button 'Send images'
 
       expect(page).to have_content 'The image has been uploaded.'
@@ -17,10 +22,13 @@ RSpec.feature 'User gallery' do
       sign_in create(:user)
       visit root_path
 
-      page.find('#navbarNav').click_link_or_button 'Galleries'
+      within '#navbarNav' do
+        click_link_or_button 'Galleries'
+      end
+
       click_link_or_button 'Add new gallery'
 
-      attach_file('gallery[cover_image]', Rails.root + 'spec/fixtures/photo.jpg')
+      attach_file('gallery[cover_image]', photo)
       fill_in 'Title', with: 'Owls'
       fill_in 'Description', with: 'Gallery with owls'
       click_link_or_button 'Create gallery'
@@ -33,39 +41,57 @@ RSpec.feature 'User gallery' do
       sign_in create(:user)
       visit root_path
 
-      page.find('#navbarNav').click_link_or_button 'Galleries'
+      within '#navbarNav' do
+        click_link_or_button 'Galleries'
+      end
+
       click_link_or_button 'Add new gallery'
       fill_in 'Title', with: 'Owls'
       click_link_or_button 'Create gallery'
 
-      page.find('#navbarNav').click_link_or_button 'Upload images'
-      attach_file('upload[files][]', Rails.root + 'spec/fixtures/photo.jpg')
-      find('#upload_galleries_ids').find(:xpath, 'option[1]').select_option
+      within '#navbarNav' do
+        click_link_or_button 'Upload images'
+      end
+
+      attach_file('upload[files][]', photo)
+
+      within '#upload_galleries_ids' do
+        find(:xpath, 'option[1]').select_option
+      end
+
       click_link_or_button 'Send images'
 
       expect(page).to have_content 'The image has been uploaded.'
+      expect(page).to have_content 'Owls'
+      expect(page).to have_css("div[style*='photo.jpg']")
     end
   end
 
   context 'with invalid data' do
-    scenario 'user upload image and want to see it in Images card' do
+    scenario 'user try to upload data without images' do
       sign_in create(:user)
       visit root_path
 
-      page.find('#navbarNav').click_link_or_button 'Upload images'
+      within '#navbarNav' do
+        click_link_or_button 'Upload images'
+      end
+
       click_link_or_button 'Send images'
 
-      expect(page).to have_content 'Upload was faild.'
+      expect(page).to have_content 'Upload was failed.'
     end
 
     scenario 'user create new gallery without title' do
       sign_in create(:user)
       visit root_path
 
-      page.find('#navbarNav').click_link_or_button 'Galleries'
+      within '#navbarNav' do
+        click_link_or_button 'Galleries'
+      end
+
       click_link_or_button 'Add new gallery'
 
-      attach_file('gallery[cover_image]', Rails.root + 'spec/fixtures/photo.jpg')
+      attach_file('gallery[cover_image]', photo)
       fill_in 'Title', with: ''
       fill_in 'Description', with: 'Gallery with owls'
       click_link_or_button 'Create gallery'

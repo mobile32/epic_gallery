@@ -1,6 +1,6 @@
 class GalleriesController < ApplicationController
   def index
-    @galleries = Gallery.where(user: current_user)
+    @galleries = current_user.galleries
   end
 
   def new
@@ -11,7 +11,7 @@ class GalleriesController < ApplicationController
     @gallery = Gallery.new(gallery_params)
 
     if @gallery.save
-      redirect_to galleries_path, notice: "The gallery has been created."
+      redirect_to galleries_path, notice: t('galleries.created')
     else
       render :new
     end

@@ -10,5 +10,5 @@ Rails.start();
 Turbolinks.start();
 
 $(document).on('turbolinks:load', function () {
-    initLightGallery();
+  initLightGallery();
 });

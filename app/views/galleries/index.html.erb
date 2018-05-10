@@ -8,61 +8,26 @@
 
     <% @galleries.each do |gallery| %>
       <div class="cardList">
-        <%# gallery.first(3).images.each do |image| %>
-        <%# end %>
+        <% gallery.images.first(3).each do |image| %>
+          <div class="card">
+            <div class="card__bg" style="background-image: url('<%= image.image_file.url(:thumb) %>')"></div>
+          </div>
+        <% end %>
 
-        <div class="card">
-          <div class="card__bg" style="background-image: url('http://lorempixel.com/245/145/animals')"></div>
-        </div>
+        <% if gallery.images.count == 0 && gallery.cover_image.blank? %>
+          <div class="card">
+            <div class="card__bg" style="background: grey;')"></div>
+          </div>
+        <% end %>
 
-        <div class="card">
-          <div class="card__bg" style="background-image: url('http://lorempixel.com/245/145/animals')"></div>
-        </div>
+        <% if gallery.cover_image.present? %>
+          <div class="card">
+            <div class="card__bg" style="background-image: url('<%= gallery.cover_image.url(:thumb) %>')"></div>
+          </div>
+        <% end %>
 
         <span class="cardList__title"><%= gallery.title %></span>
       </div>
     <% end %>
-
-
-
-<!--    <div class="cardList">-->
-<!--      <div class="card">-->
-<!--        <div class="card__bg" style="background-image: url('http://lorempixel.com/245/146/animals')"></div>-->
-<!--      </div>-->
-<!--      <div class="card">-->
-<!--        <div class="card__bg" style="background-image: url('http://lorempixel.com/245/147/animals')"></div>-->
-<!--      </div>-->
-<!--      <div class="card">-->
-<!--        <div class="card__bg" style="background-image: url('http://lorempixel.com/245/141/animals')"></div>-->
-<!--      </div>-->
-<!--      <span class="cardList__title">Group 2</span>-->
-<!--    </div>-->
-
-<!--    <div class="cardList">-->
-<!--      <div class="card">-->
-<!--        <div class="card__bg" style="background-image: url('http://lorempixel.com/245/147/animals')"></div>-->
-<!--      </div>-->
-<!--      <div class="card">-->
-<!--        <div class="card__bg" style="background-image: url('http://lorempixel.com/245/148/animals')"></div>-->
-<!--      </div>-->
-<!--      <div class="card">-->
-<!--        <div class="card__bg" style="background-image: url('http://lorempixel.com/245/142/animals')"></div>-->
-<!--      </div>-->
-<!--      <span class="cardList__title">Group 3</span>-->
-<!--    </div>-->
-
-<!--    <div class="cardList">-->
-<!--      <div class="card">-->
-<!--        <div class="card__bg" style="background-image: url('http://lorempixel.com/245/148/animals')"></div>-->
-<!--      </div>-->
-<!--      <div class="card">-->
-<!--        <div class="card__bg" style="background-image: url('http://lorempixel.com/245/149/animals')"></div>-->
-<!--      </div>-->
-<!--      <div class="card">-->
-<!--        <div class="card__bg" style="background-image: url('http://lorempixel.com/245/143/animals')"></div>-->
-<!--      </div>-->
-<!--      <span class="cardList__title">Group 4</span>-->
-<!--    </div>-->
-
   </div>
 </div>

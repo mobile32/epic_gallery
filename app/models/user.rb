@@ -6,6 +6,7 @@ class User < ApplicationRecord
          :omniauthable, omniauth_providers: [:google_oauth2]
 
   has_many :galleries
+  has_many :images
 
   validates :first_name, :last_name, presence: true
 

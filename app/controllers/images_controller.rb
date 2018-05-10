@@ -1,6 +1,6 @@
 class ImagesController < ApplicationController
   def index
-    @images = Image.where(user: current_user)
+    @images = current_user.images
   end
 
   def new
@@ -9,14 +9,13 @@ class ImagesController < ApplicationController
   end
 
   def create
-    #TODO add exception when no image
-    @upload_form = UploadForm.new(images: upload_params[:files], galleries_ids: upload_params[:galleries_ids]).as(current_user)
+    @upload_form = UploadForm.new(upload_params).as(current_user)
 
     if @upload_form.save
       redirect_to images_path, notice: "The image has been uploaded."
     else
       @galleries = current_user.galleries
-      flash[:error] = "Upload was faild."
+      flash[:error] = t('images.errors.upload_failed')
       render :new
     end
   end
