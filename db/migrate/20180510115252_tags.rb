@@ -6,14 +6,11 @@ class Tags < ActiveRecord::Migration[5.1]
       t.timestamps
     end
 
-    create_table :galleries_tags do |t|
-      t.belongs_to :gallery, index: true, foreign_key: true
-      t.belongs_to :tag, index: true, foreign_key: true
-    end
-
-    create_table :images_tags do |t|
+    create_table :image_tags do |t|
       t.belongs_to :image, index: true, foreign_key: true
       t.belongs_to :tag, index: true, foreign_key: true
+
+      t.timestamps
     end
   end
 end

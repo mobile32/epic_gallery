@@ -1,6 +1,6 @@
 class Tag < ApplicationRecord
-  has_and_belongs_to_many :images
-  has_and_belongs_to_many :galleries
+  has_many :image_tags
+  has_many :images, through: :image_tags
 
   validates :name, presence: true
 end
