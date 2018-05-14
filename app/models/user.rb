@@ -4,9 +4,13 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable,
          :omniauthable, omniauth_providers: [:google_oauth2]
+
+  has_many :galleries
+  has_many :images
+
   validates :first_name, :last_name, presence: true
 
-  mount_uploader :avatar, AvatarUploader
+  mount_uploader :avatar, ImageUploader
 
   def self.from_omniauth(access_token)
     data = access_token.info
@@ -21,5 +25,3 @@ class User < ApplicationRecord
     user
   end
 end
-
-

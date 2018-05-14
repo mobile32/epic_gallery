@@ -30,6 +30,11 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
+  galleries:
+    created: "The gallery has been created."
+  images:
+    errors:
+      upload_failed: "Upload was failed."
   activerecord:
     errors:
       messages:

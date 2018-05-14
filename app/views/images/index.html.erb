@@ -1,0 +1,13 @@
+<br>
+<%= simple_form_for(@filters, url: images_path(@filters), html: { method: :get }, wrapper: :vertical_form) do |f| %>
+  <%= f.input :tags, as: :select, collection: Tag.all, value_method: :name, input_html: { multiple: true, class: 'autocomplete-search-tags' } %>
+  <br>
+  <%= f.button :submit, 'Find images' %>
+<% end %>
+<br>
+<div id="lightgallery">
+  <% @images.each do |image| %>
+      <%= link_to image_tag(image.image_file.url(:thumb)), image.image_file.url %>
+    <% end %>
+</div>
+<br>

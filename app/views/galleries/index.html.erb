@@ -1,0 +1,33 @@
+<br>
+<div class="container">
+  <%= link_to 'Add new gallery', new_gallery_path, class: 'btn btn-success btn-lg btn-block' %>
+</div>
+<br>
+<div class="gallery-list inner-body">
+  <div class="container">
+
+    <% @galleries.each do |gallery| %>
+      <div class="cardList">
+        <% gallery.images.first(3).each do |image| %>
+          <div class="card">
+            <div class="card__bg" style="background-image: url('<%= image.image_file.url(:thumb) %>')"></div>
+          </div>
+        <% end %>
+
+        <% if gallery.images.count == 0 && gallery.cover_image.blank? %>
+          <div class="card">
+            <div class="card__bg" style="background: grey;')"></div>
+          </div>
+        <% end %>
+
+        <% if gallery.cover_image.present? %>
+          <div class="card">
+            <div class="card__bg" style="background-image: url('<%= gallery.cover_image.url(:thumb) %>')"></div>
+          </div>
+        <% end %>
+
+        <span class="cardList__title"><%= gallery.title %></span>
+      </div>
+    <% end %>
+  </div>
+</div>

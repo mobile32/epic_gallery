@@ -2,7 +2,9 @@ RSpec.feature 'User authentication' do
   context 'with valid details' do
     scenario 'user sings up' do
       visit root_path
-      click_link_or_button 'Sign up'
+      within '#navbarNav' do
+        click_link_or_button 'Sign up'
+      end
 
       expect(current_path).to eq(new_user_registration_path)
 
@@ -14,15 +16,17 @@ RSpec.feature 'User authentication' do
 
       expect do
         click_button 'Create account'
-      end.to change {User.count}.by(1)
+      end.to change { User.count }.by(1)
 
       expect(page).to have_content 'Your account has been successfully created'
     end
 
-    scenario 'user log into' do
+    scenario 'user logs in' do
       create(:user, email: 'jan.kowalski@gmail.com', password: 'jkpassword')
       visit root_path
-      click_link_or_button 'Log in'
+      within '#navbarNav' do
+        click_link_or_button 'Log in'
+      end
 
       expect(current_path).to eq(new_user_session_path)
 
@@ -37,16 +41,21 @@ RSpec.feature 'User authentication' do
       user = create(:user, email: 'jan.kowalski@gmail.com', password: 'jkpassword')
       sign_in user
       visit root_path
-      click_link_or_button 'Log out'
 
-      expect(page).to have_content 'Log out successfully successfully'
+      within '#navbarNav' do
+        click_link_or_button 'Log out'
+      end
+
+      expect(page).to have_content 'You need to sign in or sign up before continuing'
     end
   end
 
   context 'with invalid details' do
     scenario 'user lefting blank fields while sign up' do
       visit root_path
-      click_link_or_button 'Sign up'
+      within '#navbarNav' do
+        click_link_or_button 'Sign up'
+      end
       click_button 'Create account'
 
       expect(page).to have_error_messages "First name can't be blank",
@@ -59,7 +68,9 @@ RSpec.feature 'User authentication' do
 
     scenario 'user filling fields with different passwords' do
       visit root_path
-      click_link_or_button 'Sign up'
+      within '#navbarNav' do
+        click_link_or_button 'Sign up'
+      end
 
       expect(current_path).to eq(new_user_registration_path)
 
@@ -71,7 +82,7 @@ RSpec.feature 'User authentication' do
 
       expect do
         click_button 'Create account'
-      end.to change {User.count}.by(0)
+      end.to change { User.count }.by(0)
 
       expect(page).to have_error_messages "Password confirmation does not match"
       expect(current_path).to eq(user_registration_path)
@@ -81,7 +92,9 @@ RSpec.feature 'User authentication' do
       create(:user, email: 'jan.kowalski@gmail.com', password: 'jkpassword')
 
       visit root_path
-      click_link_or_button 'Sign up'
+      within '#navbarNav' do
+        click_link_or_button 'Sign up'
+      end
 
       fill_in 'First name', with: 'Jan'
       fill_in 'Last name', with: 'Kowalski'
@@ -91,7 +104,7 @@ RSpec.feature 'User authentication' do
 
       expect do
         click_button 'Create account'
-      end.to change {User.count}.by(0)
+      end.to change { User.count }.by(0)
 
       expect(page).to have_error_messages 'Email has already been taken'
       expect(current_path).to eq(user_registration_path)
@@ -99,7 +112,9 @@ RSpec.feature 'User authentication' do
 
     scenario 'user using wrong email address' do
       visit root_path
-      click_link_or_button 'Sign up'
+      within '#navbarNav' do
+        click_link_or_button 'Sign up'
+      end
 
       fill_in 'First name', with: 'Jan'
       fill_in 'Last name', with: 'Kowalski'
@@ -109,17 +124,19 @@ RSpec.feature 'User authentication' do
 
       expect do
         click_button 'Create account'
-      end.to change {User.count}.by(0)
+      end.to change { User.count }.by(0)
 
       expect(current_path).to eq(user_registration_path)
     end
 
     scenario 'user using to short password' do
       min_password_length = 5
-      too_short_password = 'p' * (min_password_length - 1)
+      too_short_password  = 'p' * (min_password_length - 1)
 
       visit root_path
-      click_link_or_button 'Sign up'
+      within '#navbarNav' do
+        click_link_or_button 'Sign up'
+      end
 
       fill_in 'First name', with: 'Jan'
       fill_in 'Last name', with: 'Kowalski'
@@ -138,7 +155,9 @@ RSpec.feature 'User authentication' do
     scenario 'user can login using google oauth2' do
       stub_omniauth
       visit root_path
-      click_link_or_button 'Sign up'
+      within '#navbarNav' do
+        click_link_or_button 'Sign up'
+      end
 
       expect(page).to have_link("Sign in with Google")
 
@@ -166,20 +185,20 @@ RSpec.feature 'User authentication' do
   end
 
   def stub_omniauth
-    OmniAuth.config.test_mode = true
+    OmniAuth.config.test_mode                 = true
     OmniAuth.config.mock_auth[:google_oauth2] =
         OmniAuth::AuthHash.new({
-                                   provider: "google",
-                                   uid: "12345678910",
-                                   info: {
-                                       email: "jan.kowalski@dgmail.com",
+                                   provider:    "google",
+                                   uid:         "12345678910",
+                                   info:        {
+                                       email:      "jan.kowalski@dgmail.com",
                                        first_name: "Jan",
-                                       last_name: "Kowalski"
+                                       last_name:  "Kowalski"
                                    },
                                    credentials: {
-                                       token: "abcdefg12345",
+                                       token:         "abcdefg12345",
                                        refresh_token: "12345abcdefg",
-                                       expires_at: DateTime.now,
+                                       expires_at:    DateTime.now,
                                    }
                                })
   end

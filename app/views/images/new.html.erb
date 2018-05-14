@@ -1,0 +1,13 @@
+<div class="container">
+  <br>
+  <h1>Upload images</h1>
+  <br>
+  <%= simple_form_for(@upload_form, url: images_path(@images), html: { method: :post }, wrapper: :vertical_form) do |f| %>
+    <%= f.input :images, as: :file, input_html: { multiple: true } %>
+    <%= f.input :galleries_ids, as: :select, collection: @galleries, input_html: { multiple: true } %>
+    <%= f.input :tags, as: :select, collection: Tag.all, value_method: :name, input_html: { multiple: true, class: 'autocomplete-add-tags' } %>
+    <br>
+    <%= f.button :submit, 'Send images' %>
+  <% end %>
+  <br>
+</div>

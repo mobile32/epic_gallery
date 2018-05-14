@@ -1,0 +1,13 @@
+<div class="container">
+  <br>
+  <h1>Create gallery</h1>
+  <br>
+  <%= simple_form_for(@gallery, wrapper: :vertical_form) do |f| %>
+    <%= f.input :cover_image, as: :file %>
+    <%= f.input :title %>
+    <%= f.input :description %>
+    <br>
+    <%= f.button :submit, 'Create gallery' %>
+  <% end %>
+  <br>
+</div>
